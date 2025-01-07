@@ -31,6 +31,14 @@ class FPortal extends FGameObject {
       MODE = MAPB;
       loadWorld(map[mapMode]);
       world.add(player);
+      player.setPosition(180, 380);
+    }
+    if (mapMode == 2 && checkForCollisions("player") && openPortal) {
+      mapMode = 0;
+      MODE = MAPA;
+      loadWorld(map[mapMode]);
+      world.add(player);
+      player.setPosition(80, 180);
     }
   }
 }

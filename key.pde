@@ -1,5 +1,6 @@
 void keyPressed() {
-  if (key == 'w' || key =='W'){
+  if (isDead) return;
+  if (key == 'w' || key =='W') {
     jump();
     wkey = true;
   }
@@ -16,12 +17,13 @@ void keyPressed() {
 }
 
 void keyReleased() {
+  if (isDead) return;
   if (key == 'w' || key =='W')wkey = false;
   if (key == 'a' || key =='A')akey = false;
   if (key == 'd' || key =='D')dkey = !true;
   if (key == 's' || key =='S')skey = false;
   if (key == 'e' || key =='E')ekey = !true;
-   if (key == 'm' || key =='M')zkey =!true;
+  if (key == 'm' || key =='M')zkey =!true;
 
 
   if (keyCode == UP)upkey = !true;

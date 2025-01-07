@@ -25,7 +25,7 @@ void mapB(PImage img) {
         b.setName("ground");
         world.add(b);
       } else if (c == orange) { // LADDER
-        FLadders ld = new FLadders(x*gridSize, x*gridSize);
+        FLadders ld = new FLadders(x*gridSize, y*gridSize);
         lve.add(ld);
         world.add(ld);
       }else if(c == darkGreen){ //VINE
@@ -34,6 +34,10 @@ void mapB(PImage img) {
         b.setStatic(true);
         b.setSensor(true);
         world.add(b);
+      }else if(c == yellow) {
+        FBridge bg = new FBridge(x*gridSize, y*gridSize);
+        lve.add(bg);
+        world.add(bg);  
       }
     }
   }

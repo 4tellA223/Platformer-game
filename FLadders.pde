@@ -15,8 +15,14 @@ class FLadders extends FGameObject {
 
   void climb() {
     float vx = player.getVelocityX();
-    if (wkey && checkForCollisions("player")) player.setVelocity(vx, -450);
-    else if (wkey && checkForCollisions("player") )player.setVelocity(vx, 450);
+    if (checkForCollisions("player")) {
+      player.setVelocity(vx * 0.5f, player.getVelocityY());
+      if (wkey) {
+        player.setVelocity(vx, -200);
+      } else if (skey) {
+        player.setVelocity(vx, 200);
+      }
+    }
   }
 
   void animate() {

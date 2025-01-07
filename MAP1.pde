@@ -1,5 +1,8 @@
 void mapA(PImage img) {
   loadAWorld(img);
+  countLever = 5;
+  openPortal = false;
+  player.setPosition(80,180);
 }
 //===========================================================================
 void loadAWorld(PImage img) {
@@ -21,19 +24,19 @@ void loadAWorld(PImage img) {
       color e = img.get(x+1, y); //color east of current pixel
       color n = img.get(x, y-1); //color ontop of current pixel
 
-      if (c == grass && n != grass && w == grass && e == grass) {   //GROUND TOP MID 
+      if (c == grass && n != grass && w == grass && e == grass) {   //GROUND TOP MID
         b.attachImage(grasstopmid);
         b.setName("ground");
         world.add(b);
-      } else if( c== grass && w != grass && n != grass  ){ // GROUND TOP LEFT
+      } else if ( c== grass && w != grass && n != grass  ) { // GROUND TOP LEFT
         b.attachImage(grasstopleft);
         b.setName("ground");
         world.add(b);
-      }else if( c == grass && e != grass && n != grass){// GROUND TOP RIGHT
+      } else if ( c == grass && e != grass && n != grass) {// GROUND TOP RIGHT
         b.attachImage(grasstopright);
         b.setName("ground");
         world.add(b);
-      }else if (c == grass && n == grass) { //GROUND BOTTOM
+      } else if (c == grass && n == grass) { //GROUND BOTTOM
         b.attachImage(grassbottom);
         b.setName("wall");
         world.add(b);
@@ -74,17 +77,17 @@ void loadAWorld(PImage img) {
         lve.add(lev);
         world.add(lev);
       } else if (c == purple) { //teleport portal
-        FPortal prt = new FPortal(x*gridSize,y*gridSize);
+        FPortal prt = new FPortal(x*gridSize, y*gridSize);
         Portal = prt;
         world.add(prt);
-      }else if( c == lightGreen){ //goomba wall
+      } else if ( c == lightGreen) { //goomba wall
         b.setName("goombaWall");
         b.setStatic(true);
         b.setSensor(true);
-        b.setFill(255,0);
+        b.setFill(255, 0);
         world.add(b);
-      }else if( c == brown){// crackshot
-        FCrackshot cs = new FCrackshot(x*gridSize,y*gridSize);
+      } else if ( c == brown) {// crackshot
+        FCrackshot cs = new FCrackshot(x*gridSize, y*gridSize);
         enemies.add(cs);
         world.add(cs);
       }

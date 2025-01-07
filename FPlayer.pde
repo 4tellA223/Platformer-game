@@ -4,23 +4,25 @@ class FPlayer extends FGameObject {
   int frame;
   int direction;
   int lives;
+  int respawnTimer = 20;
 
   FPlayer() {
     super();
     frame = 0;
-    direction =R;
-    if(mapMode == 0)
-    setPosition(80, 180);
-    else if(mapMode ==1)
-    setPosition(180,400);
+    direction = R;
+      setPosition(1780, 1500);
     setRotatable(false);
     setName("player");
   }
   void act() {
-    handleInput();
-    animate();
-    checkPoints();
-    playerDeath();
+    if (isDead) {
+      handleDeath();
+    } else {
+      handleInput();
+      animate();
+      checkPoints();
+      playerDeath();
+    }
   }
   //=================================================INPUT==============================================
   void handleInput() {
@@ -29,12 +31,12 @@ class FPlayer extends FGameObject {
     if (vy <= 2 && player.checkForCollisions("ground")) {
       action = idle;
     }
-    if (akey) {
+    if (akey && respawnTimer >= 15) {
       action = run;
       direction =L;
       setVelocity(-500, vy);
     }
-    if (dkey) {
+    if (dkey && respawnTimer >= 15) {
       action = run;
       direction =R;
       setVelocity(500, vy);
@@ -42,11 +44,12 @@ class FPlayer extends FGameObject {
     if (!player.checkForCollisions("ground")) {
       action = jump;
     }
-    if (wkey && player.checkForCollisions("ground")) {
+    if (wkey && player.checkForCollisions("ground") && respawnTimer >= 15) {
       setVelocity(vx, -450);
-    }if(zkey){
+    }
+    if (zkey) {
       zoom = 0.35;
-    }else if(!zkey)zoom = 1.5;
+    } else if (!zkey)zoom = 1.5;
   }
   //============================================ANIMATE==============================================
   void animate() {
@@ -67,12 +70,35 @@ class FPlayer extends FGameObject {
   }
   //==============================HARMFUL VARIABLE============================
   void playerDeath() {
-    //CONTACTING HARMFUL OBJECTS
-    if (player.checkForCollisions("spikes")) {
+    if (player.checkForCollisions("spikes") || player.checkForCollisions("world edge")) {
+      isDead =true;
       setPosition(respondX, respondY);
-    }else if (player.checkForCollisions("world edge")) {
-      setPosition(respondX, respondY);
+      setVelocity(0, 0);
+      resetKeys();
     }
-    
+  }
+  //=========================DEATH COUNTDOWN=======================================
+  void handleDeath() {
+    if (isDead) {
+      setVelocity(0, 0);
+      respawnTimer--;
+      if (respawnTimer <= 0) {
+        isDead = false;
+        setPosition(respondX, respondY);
+        resetKeys();
+        respawnTimer = 20;
+      }
+    }
+  }
+  //=============================RESET KEY=================================
+  void resetKeys() {
+    akey = false;
+    dkey = false;
+    wkey = false;
+    skey = false;
+    upkey = false;
+    downkey = false;
+    rightkey = false;
+    leftkey = false;
   }
 }

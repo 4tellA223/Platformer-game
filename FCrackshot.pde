@@ -27,7 +27,7 @@ class FCrackshot extends FGameObject {
    void collide() {
     if (checkForCollisions("goombaWall")) {
       direction *= -1;
-      setPosition(getX()+direction, getY());
+      setPosition(getX()+direction*gridSize/6, getY());
     }
     if (checkForCollisions("player")) {
       if (player.getY() < getY() - gridSize/2) {

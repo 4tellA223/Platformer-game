@@ -5,6 +5,7 @@ FWorld world;
 int gridSize = 32;
 float zoom = 1.5;
 boolean keyReleased, wasPressed;
+PFont game;
 
 //Map variables
 PImage[] map;
@@ -17,23 +18,25 @@ PImage walls, ladders;
 
 float respondX = 80;
 float respondY = 180;
-int countLever = 5;
+int countLever = 0;
 boolean openPortal = false;
 
 // MAPB
-PImage rock,mossRock;
+PImage rock, mossRock;
 PImage vine;
+PImage bridge;
 
 int MODE = 1;
 final int INTRO   = 0;
 final int MAPA    = 1;
 final int MAPB    = 2;
 final int GAMEOVER= 3;
-int mapMode = 1;
+int mapMode = 2;
 
 //PLAYER VAIRABLE
 FPlayer player;
 boolean upkey, downkey, leftkey, rightkey, wkey, akey, skey, dkey, spacekey, ekey, zkey;
+boolean isDead = false;
 PImage[] action;
 PImage[] idle;
 PImage[] aim;
@@ -56,6 +59,7 @@ color lightGreen = #d3f9bc;
 
 color darkGreen = #22b14c;
 color orange = #ff7e00;
+color yellow =#fff200;
 
 //GAME
 ArrayList<FGameObject> npc;
@@ -80,7 +84,9 @@ void setup() {
   lve= new ArrayList();
   Portal = new FGameObject();
   enemies = new ArrayList();
-  map = new PImage[2];
+  map = new PImage[3];
+  
+  game = createFont("GAME_glm.ttf", 128);
 
 
   //LOAD IMAGE
@@ -96,6 +102,7 @@ void loadImages() {
   //LOAD IMAGE
   map[0] = loadImage("map.png");
   map[1] = loadImage("map2.png");
+  map[2] = loadImage("Intromap.png");
   background = loadImage("background1.png");
   spikes = loadImage("texture/spike.png");
   spikesRight =loadImage("texture/spike_right.png");
@@ -114,6 +121,7 @@ void loadImages() {
   mossRock = loadImage("texture/rockMoss.jpg");
   ladders = loadImage("texture/Ladders.png");
   vine = loadImage("texture/vine.png");
+  bridge = loadImage("texture/bridge.jpg");
 
   //RESIZE
   grasstopmid.resize(gridSize, gridSize);
@@ -128,14 +136,15 @@ void loadImages() {
   closeLever.resize(gridSize, gridSize);
   walls.resize(gridSize, gridSize);
   closedPortal.resize(gridSize*2, gridSize*2);
-  
+
 
   //MAPB
   rock.resize(gridSize, gridSize);
-  mossRock.resize(gridSize,gridSize);
-  ladders.resize(gridSize,gridSize);
-  ladders.resize(gridSize,gridSize);
-  vine.resize(gridSize,gridSize);
+  mossRock.resize(gridSize, gridSize);
+  ladders.resize(gridSize, gridSize);
+  ladders.resize(gridSize, gridSize);
+  vine.resize(gridSize, gridSize);
+  bridge.resize(gridSize, gridSize);
 
   //GIF MAP VARIABLE===============================================
   portal = new PImage[9];
@@ -196,7 +205,9 @@ void loadWorld(PImage img) {
   world = new FWorld(-3000, -3000, 3000, 3000);
   world.setGravity(0, 900);
 
-  if (mapMode == 0) {
+  if (mapMode == 2) {
+    intro(img);
+  } else if (mapMode == 0) {
     mapA(img);
   } else if (mapMode == 1) {
     mapB(img);
@@ -222,7 +233,15 @@ void draw() {
 //==========================================DRAW WORLD=============================================
 
 void drawWorld() {
+  
   image(background, 0, 0);
+  
+  if (mapMode == 2) {
+    textFont(game);
+    textSize(48);
+    text("WALK TO PORTAL TO BEGIN", 450, 200);
+    fill(0, 408, 612);
+  }
   pushMatrix();
   if (!zkey)translate(-player.getX()*zoom+width/2, -player.getY()*zoom+height/2);
 
