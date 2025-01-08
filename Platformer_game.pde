@@ -5,33 +5,36 @@ FWorld world;
 int gridSize = 32;
 float zoom = 1.5;
 boolean keyReleased, wasPressed;
+boolean gameover;
 PFont game;
 
 //Map variables
 PImage[] map;
-PImage background;
+PImage background, gameoverBG;
 PImage grasstopmid, grassbottom, grasstopleft, grasstopright;
 PImage closedPortal;
 PImage spikes, spikesRight, spikesLeft;
 PImage openLever, closeLever;
 PImage walls, ladders;
 
+
 float respondX = 80;
 float respondY = 180;
 int countLever = 0;
 boolean openPortal = false;
+int countHealth = 6;
 
 // MAPB
 PImage rock, mossRock;
 PImage vine;
 PImage bridge;
 
-int MODE = 1;
+int MODE = 0;
 final int INTRO   = 0;
 final int MAPA    = 1;
 final int MAPB    = 2;
 final int GAMEOVER= 3;
-int mapMode = 2;
+int mapMode = 1;
 
 //PLAYER VAIRABLE
 FPlayer player;
@@ -44,8 +47,10 @@ PImage[] run;
 PImage[] jump;
 
 PImage[] mughead;
+PImage[] Bluebat;
 PImage[] portal;
 PImage[] crackshot;
+PImage[] health;
 
 //COLORS
 color grass = #a8e61d;
@@ -85,12 +90,13 @@ void setup() {
   Portal = new FGameObject();
   enemies = new ArrayList();
   map = new PImage[3];
-  
+
   game = createFont("GAME_glm.ttf", 128);
 
 
   //LOAD IMAGE
   loadImages();
+
 
   //LOAD VARIABLE
 
@@ -103,7 +109,10 @@ void loadImages() {
   map[0] = loadImage("map.png");
   map[1] = loadImage("map2.png");
   map[2] = loadImage("Intromap.png");
+  gameoverBG = loadImage("texture/gameOver.jpg");
   background = loadImage("background1.png");
+
+  //MAP A
   spikes = loadImage("texture/spike.png");
   spikesRight =loadImage("texture/spike_right.png");
   spikesLeft = loadImage("texture/spike_left.png");
@@ -123,12 +132,16 @@ void loadImages() {
   vine = loadImage("texture/vine.png");
   bridge = loadImage("texture/bridge.jpg");
 
+  //MAP
+
+
   //RESIZE
   grasstopmid.resize(gridSize, gridSize);
   grasstopright.resize(gridSize, gridSize);
   grasstopleft.resize(gridSize, gridSize);
   grassbottom.resize(gridSize, gridSize);
   background.resize(width, height);
+  gameoverBG.resize(width, height);
   spikes.resize(gridSize, gridSize);
   spikesRight.resize(gridSize, gridSize);
   spikesLeft.resize(gridSize, gridSize);
@@ -179,6 +192,21 @@ void loadImages() {
     jump[i-1] = loadImage("cuphead/jump/cuphead_jump_000" + i + ".png");
     jump[i-1].resize(gridSize, gridSize);
   }
+  
+  //BLUEBAT
+  Bluebat = new PImage[5];
+
+  for (int i = 1; i<= Bluebat.length; i++) {
+    Bluebat[i-1] = loadImage("NPC/BlueBat/Imp idle__devil_ph3_small_demon_idle_000" + i + ".png");
+    Bluebat[i-1].resize(gridSize, gridSize);
+  }
+
+  //HEALTH BAR
+  health = new PImage[countHealth];
+  for (int i = 1; i <= health.length; i ++) {
+    health[i-1] = loadImage("texture/healthBar0" + i + ".png");
+    health[i-1].resize(gridSize*4, gridSize);
+  }
 
   action = idle;
 
@@ -205,15 +233,15 @@ void loadWorld(PImage img) {
   world = new FWorld(-3000, -3000, 3000, 3000);
   world.setGravity(0, 900);
 
+
   if (mapMode == 2) {
     intro(img);
   } else if (mapMode == 0) {
     mapA(img);
   } else if (mapMode == 1) {
     mapB(img);
-  } else {
-    println("ERROR: MODE DNE, MODE = " + MODE);
   }
+  
 }
 //==========================================LOAD PLAYERS=============================================
 
@@ -233,15 +261,19 @@ void draw() {
 //==========================================DRAW WORLD=============================================
 
 void drawWorld() {
-  
+
   image(background, 0, 0);
-  
+
+
   if (mapMode == 2) {
     textFont(game);
     textSize(48);
     text("WALK TO PORTAL TO BEGIN", 450, 200);
     fill(0, 408, 612);
   }
+
+
+
   pushMatrix();
   if (!zkey)translate(-player.getX()*zoom+width/2, -player.getY()*zoom+height/2);
 
@@ -265,6 +297,11 @@ void drawWorld() {
   }
 
   Portal.act();
+  //ONTOP EVERYTHING
+
+  image(health[countHealth-1], 40, 50);
+
+  if (gameover) gameover();
 }
 //============================================================
 void drawBackground(PImage img) {

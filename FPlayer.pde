@@ -10,7 +10,7 @@ class FPlayer extends FGameObject {
     super();
     frame = 0;
     direction = R;
-      setPosition(1780, 1500);
+    setPosition(1780, 1500);
     setRotatable(false);
     setName("player");
   }
@@ -75,6 +75,10 @@ class FPlayer extends FGameObject {
       setPosition(respondX, respondY);
       setVelocity(0, 0);
       resetKeys();
+      if (countHealth>1)
+        countHealth --;
+      else
+        gameover = true;
     }
   }
   //=========================DEATH COUNTDOWN=======================================
@@ -101,4 +105,5 @@ class FPlayer extends FGameObject {
     rightkey = false;
     leftkey = false;
   }
+  //==============================GAMEOVERBG==================
 }
