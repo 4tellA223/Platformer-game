@@ -1,5 +1,5 @@
 class FPortal extends FGameObject {
-  
+
   int frame = 0;
 
   FPortal(float x, float y) {
@@ -39,6 +39,9 @@ class FPortal extends FGameObject {
       loadWorld(map[mapMode]);
       world.add(player);
       player.setPosition(80, 180);
+    }
+    if ( mapMode == 1 && checkForCollisions("player") && openPortal) {
+      gameover();
     }
   }
 }

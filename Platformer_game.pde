@@ -10,12 +10,13 @@ PFont game;
 
 //Map variables
 PImage[] map;
-PImage background, gameoverBG;
+PImage background, gameoverBG, gameoverWin;
 PImage grasstopmid, grassbottom, grasstopleft, grasstopright;
 PImage closedPortal;
 PImage spikes, spikesRight, spikesLeft;
 PImage openLever, closeLever;
 PImage walls, ladders;
+PImage Hammer;
 
 
 float respondX = 80;
@@ -40,6 +41,7 @@ int mapMode = 1;
 FPlayer player;
 boolean upkey, downkey, leftkey, rightkey, wkey, akey, skey, dkey, spacekey, ekey, zkey;
 boolean isDead = false;
+boolean Death = false;
 PImage[] action;
 PImage[] idle;
 PImage[] aim;
@@ -65,6 +67,7 @@ color lightGreen = #d3f9bc;
 color darkGreen = #22b14c;
 color orange = #ff7e00;
 color yellow =#fff200;
+color red = #ed1c24;
 
 //GAME
 ArrayList<FGameObject> npc;
@@ -111,6 +114,7 @@ void loadImages() {
   map[2] = loadImage("Intromap.png");
   gameoverBG = loadImage("texture/gameOver.jpg");
   background = loadImage("background1.png");
+  gameoverWin = loadImage("gameoverWin.jpg");
 
   //MAP A
   spikes = loadImage("texture/spike.png");
@@ -131,6 +135,7 @@ void loadImages() {
   ladders = loadImage("texture/Ladders.png");
   vine = loadImage("texture/vine.png");
   bridge = loadImage("texture/bridge.jpg");
+  Hammer = loadImage("texture/spear.png");
 
   //MAP
 
@@ -142,6 +147,7 @@ void loadImages() {
   grassbottom.resize(gridSize, gridSize);
   background.resize(width, height);
   gameoverBG.resize(width, height);
+  gameoverWin.resize(width,height);
   spikes.resize(gridSize, gridSize);
   spikesRight.resize(gridSize, gridSize);
   spikesLeft.resize(gridSize, gridSize);
@@ -158,6 +164,7 @@ void loadImages() {
   ladders.resize(gridSize, gridSize);
   vine.resize(gridSize, gridSize);
   bridge.resize(gridSize, gridSize);
+  Hammer.resize(gridSize,gridSize);
 
   //GIF MAP VARIABLE===============================================
   portal = new PImage[9];
@@ -298,7 +305,7 @@ void drawWorld() {
 
   Portal.act();
   //ONTOP EVERYTHING
-
+  if(!gameover)
   image(health[countHealth-1], 40, 50);
 
   if (gameover) gameover();

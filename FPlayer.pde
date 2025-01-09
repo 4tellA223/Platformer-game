@@ -70,15 +70,17 @@ class FPlayer extends FGameObject {
   }
   //==============================HARMFUL VARIABLE============================
   void playerDeath() {
-    if (player.checkForCollisions("spikes") || player.checkForCollisions("world edge")) {
-      isDead =true;
+    if (player.checkForCollisions("spikes") || player.checkForCollisions("world edge")|| player.checkForCollisions("hammer")) {
+      isDead = true;
       setPosition(respondX, respondY);
       setVelocity(0, 0);
       resetKeys();
       if (countHealth>1)
         countHealth --;
-      else
+      else if ( countHealth<=1) {
+        Death = true;
         gameover = true;
+      }
     }
   }
   //=========================DEATH COUNTDOWN=======================================

@@ -3,6 +3,7 @@ class FBluebat extends FGameObject {
   int direction = L;
   int frame = 0;
   int speed = 85;
+  int timer = 200;
 
   FBluebat(float x, float y) {
     super();
@@ -14,6 +15,7 @@ class FBluebat extends FGameObject {
     animate();
     collide();
     move();
+    ThrowHammer();
   }
 
   void animate() {
@@ -44,5 +46,21 @@ class FBluebat extends FGameObject {
   void move(){
     float vy = getVelocityY();
     setVelocity(speed*direction, vy);
+  }
+  //==========================================
+  void ThrowHammer() {
+    timer--;
+  
+    if (timer < 0) {
+      FBox hammer = new FBox(10,10);
+      hammer.setPosition(getX(),getY());
+      hammer.setVelocity(200*direction,-500);
+      hammer.setAngularVelocity(55);
+      hammer.setSensor(true);
+      hammer.attachImage(Hammer);
+      hammer.setName("hammer");
+      world.add(hammer);
+      timer=(int)random(200,300);
+    }
   }
 }
