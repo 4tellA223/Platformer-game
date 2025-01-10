@@ -7,6 +7,11 @@ float zoom = 1.5;
 boolean keyReleased, wasPressed;
 boolean gameover;
 PFont game;
+Button pause;
+boolean mouseReleased;
+color dark = #B2FFE2;
+color light = #B2B5FF;
+boolean ispaused = false;
 
 //Map variables
 PImage[] map;
@@ -35,7 +40,7 @@ final int INTRO   = 0;
 final int MAPA    = 1;
 final int MAPB    = 2;
 final int GAMEOVER= 3;
-int mapMode = 1;
+int mapMode = 2;
 
 //PLAYER VAIRABLE
 FPlayer player;
@@ -82,6 +87,7 @@ FGameObject Portal;
 void setup() {
 
   //DEFAULT
+  
   //fullScreen();
   size(900, 900);
   Fisica.init(this);
@@ -95,6 +101,7 @@ void setup() {
   map = new PImage[3];
 
   game = createFont("GAME_glm.ttf", 128);
+  pause = new Button("pause",800,70,150,90,dark,light);
 
 
   //LOAD IMAGE
@@ -261,8 +268,20 @@ void loadPlayer() {
 
 void draw() {
   background(255);
-  drawWorld();
-  player.act();
+
+  
+    drawWorld();
+    player.act();
+    
+  if(ispaused || gameover){
+    fill(0, 0, 0, 128); 
+    rect(0, 0, width+width, height+height); 
+    
+    fill(255);
+    textSize(48);
+    if(ispaused)
+    text("Game Paused", width / 2, height / 2);
+  }
 }
 
 //==========================================DRAW WORLD=============================================
@@ -275,6 +294,7 @@ void drawWorld() {
   if (mapMode == 2) {
     textFont(game);
     textSize(48);
+    fill(0, 408, 612);
     text("WALK TO PORTAL TO BEGIN", 450, 200);
     fill(0, 408, 612);
   }
@@ -305,8 +325,11 @@ void drawWorld() {
 
   Portal.act();
   //ONTOP EVERYTHING
-  if(!gameover)
+  if(!gameover){
   image(health[countHealth-1], 40, 50);
+  click();
+  pause.show();
+  }
 
   if (gameover) gameover();
 }

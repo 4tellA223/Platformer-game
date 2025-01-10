@@ -12,8 +12,10 @@ class FPortal extends FGameObject {
   }
 
   void act() {
-    animate();
-    switchMap();
+    if (!ispaused) {
+      animate();
+      switchMap();
+    }
   }
   void animate() {
     if (openPortal) {

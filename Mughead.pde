@@ -13,7 +13,9 @@ class FMughead extends FGameObject {
   }
 
   void act() {
+    if (!ispaused) {
     animate();
+    }
   }
   void animate() {
     if (frame == 5) frame = 0;

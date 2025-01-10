@@ -15,13 +15,20 @@ class FPlayer extends FGameObject {
     setName("player");
   }
   void act() {
-    if (isDead) {
-      handleDeath();
-    } else {
-      handleInput();
-      animate();
-      checkPoints();
-      playerDeath();
+    if (!ispaused) {
+      world.setGravity(0, 900);
+      if (isDead) {
+        handleDeath();
+      } else {
+        handleInput();
+        animate();
+        checkPoints();
+        playerDeath();
+      }
+    }
+    if(ispaused || gameover){
+      world.setGravity(0, 0);
+      setVelocity(getVelocityX(),0);
     }
   }
   //=================================================INPUT==============================================

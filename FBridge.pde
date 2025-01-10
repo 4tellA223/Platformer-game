@@ -9,9 +9,11 @@ class FBridge extends FGameObject {
     setStatic(true);
   }
   void act() {
-    if (checkForCollisions("player")) {
-      setStatic(false);
-      setSensor(true);
+    if (!ispaused) {
+      if (checkForCollisions("player")) {
+        setStatic(false);
+        setSensor(true);
+      }
     }
   }
 }

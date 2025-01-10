@@ -1,5 +1,6 @@
 void mapB(PImage img) {
   // RESET
+  openPortal = false;
   countLever= 5;
   countHealth = 6;
 

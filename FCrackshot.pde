@@ -11,9 +11,11 @@ class FCrackshot extends FGameObject {
     setRotatable(false);
   }
   void act() {
-    animate();
-    collide();
-    move();
+    if (!ispaused) {
+      animate();
+      collide();
+      move();
+    }
   }
 
   void animate() {
@@ -24,7 +26,7 @@ class FCrackshot extends FGameObject {
       frame++;
     }
   }
-   void collide() {
+  void collide() {
     if (checkForCollisions("goombaWall")) {
       direction *= -1;
       setPosition(getX()+direction*gridSize/6, getY());
@@ -33,15 +35,15 @@ class FCrackshot extends FGameObject {
       if (player.getY() < getY() - gridSize/2) {
         world.remove(this);
         enemies.remove(this);
-        player.setVelocity(player.getVelocityX(),-300);
+        player.setVelocity(player.getVelocityX(), -300);
       } else {
         player.lives--;
         player.setPosition(200, 0);
       }
     }
   }
-  
-  void move(){
+
+  void move() {
     float vy = getVelocityY();
     setVelocity(speed*direction, vy);
   }

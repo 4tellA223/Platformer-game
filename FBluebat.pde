@@ -12,10 +12,12 @@ class FBluebat extends FGameObject {
     setRotatable(false);
   }
   void act() {
-    animate();
-    collide();
-    move();
-    ThrowHammer();
+    if (!ispaused) {
+      animate();
+      collide();
+      move();
+      ThrowHammer();
+    }
   }
 
   void animate() {
@@ -26,7 +28,7 @@ class FBluebat extends FGameObject {
       frame++;
     }
   }
-   void collide() {
+  void collide() {
     if (checkForCollisions("goombaWall")) {
       direction *= -1;
       setPosition(getX()+direction*gridSize/6, getY());
@@ -35,32 +37,32 @@ class FBluebat extends FGameObject {
       if (player.getY() < getY() - gridSize/2) {
         world.remove(this);
         enemies.remove(this);
-        player.setVelocity(player.getVelocityX(),-300);
+        player.setVelocity(player.getVelocityX(), -300);
       } else {
         player.lives--;
         player.setPosition(200, 0);
       }
     }
   }
-  
-  void move(){
+
+  void move() {
     float vy = getVelocityY();
     setVelocity(speed*direction, vy);
   }
   //==========================================
   void ThrowHammer() {
     timer--;
-  
+
     if (timer < 0) {
-      FBox hammer = new FBox(10,10);
-      hammer.setPosition(getX(),getY());
-      hammer.setVelocity(200*direction,-500);
+      FBox hammer = new FBox(10, 10);
+      hammer.setPosition(getX(), getY());
+      hammer.setVelocity(200*direction, -500);
       hammer.setAngularVelocity(55);
       hammer.setSensor(true);
       hammer.attachImage(Hammer);
       hammer.setName("hammer");
       world.add(hammer);
-      timer=(int)random(200,300);
+      timer=(int)random(200, 300);
     }
   }
 }

@@ -1,7 +1,6 @@
 void keyPressed() {
   if (isDead) return;
   if (key == 'w' || key =='W') {
-    jump();
     wkey = true;
   }
   if (key == 'a' || key =='A')akey = true;
@@ -32,11 +31,11 @@ void keyReleased() {
   if (keyCode == DOWN) downkey =!true;
 }
 
-void jump() {
-  keyReleased = false;
-  if (wkey) wasPressed = true;
-  if (wasPressed && !keyPressed) {
-    keyReleased = true;
+void click() {
+  mouseReleased = false;
+  if (mousePressed) wasPressed = true;
+  if (wasPressed && mousePressed == false) {
+    mouseReleased = true;
     wasPressed = false;
   }
 }
